@@ -1,7 +1,11 @@
 package willer.app.domain;
 
+import org.joda.money.Money;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
+import static org.joda.money.CurrencyUnit.USD;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,7 +19,7 @@ class MakePaymentUseCaseTest {
         when(mockPaymentIdentity.nextIdentity()).thenReturn(givenPaymentIdentity());
 
         final MakePaymentUseCase useCase = new MakePaymentUseCase(mockPublisher, mockPaymentIdentity);
-        final Basket basket = new Basket();
+        final Basket basket = givenBasketWithBanana();
         final MakePaymentCommand command = new MakePaymentCommand(basket);
 
         useCase.execute(command);
@@ -25,8 +29,12 @@ class MakePaymentUseCaseTest {
 
     }
 
+    private static Basket givenBasketWithBanana() {
+        return new Basket(Set.of(new Product("Banana", Money.of(USD, 0.5))));
+    }
+
     private static PaymentCreatedEvent givenPaymentCreatedEvent() {
-        return new PaymentCreatedEvent(givenPaymentIdentity());
+        return new PaymentCreatedEvent(givenPaymentIdentity(), Money.of(USD, 0.5));
     }
 
     private static PaymentId givenPaymentIdentity() {
