@@ -1,4 +1,4 @@
-package willer.app.domain;
+package hexagonal.app.payment.domain;
 
 import org.joda.money.Money;
 

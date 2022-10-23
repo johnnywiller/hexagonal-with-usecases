@@ -1,15 +1,17 @@
-package willer.app.domain;
+package hexagonal.app.payment.domain;
 
+import hexagonal.app.payment.domain.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
 import lombok.RequiredArgsConstructor;
 import org.joda.money.Money;
 
 @RequiredArgsConstructor
-public class MakePaymentUseCase {
+public class DefaultCreatePaymentUseCase implements CreatePaymentUseCase {
 
     private final EventPublisherPort eventPublisher;
     private final PaymentIdentityPort paymentIdentityPort;
 
-    void execute(MakePaymentCommand command) {
+    @Override
+    public void execute(CreatePaymentCommand command) {
         Money paymentAmount = command.basket().total();
         final PaymentCreatedEvent createdPayment = new PaymentCreatedEvent(
                 paymentIdentityPort.nextIdentity(),

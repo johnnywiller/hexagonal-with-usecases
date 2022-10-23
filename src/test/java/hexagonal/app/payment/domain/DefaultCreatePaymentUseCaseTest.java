@@ -1,5 +1,6 @@
-package willer.app.domain;
+package hexagonal.app.payment.domain;
 
+import hexagonal.app.payment.domain.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
 import org.joda.money.Money;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class MakePaymentUseCaseTest {
+class DefaultCreatePaymentUseCaseTest {
+
+    PaymentDomainConfiguration configuration = new PaymentDomainConfiguration();
 
     @Test
     void shouldCreatePayment() {
@@ -18,15 +21,17 @@ class MakePaymentUseCaseTest {
         PaymentIdentityPort mockPaymentIdentity = mock(PaymentIdentityPort.class);
         when(mockPaymentIdentity.nextIdentity()).thenReturn(givenPaymentIdentity());
 
-        final MakePaymentUseCase useCase = new MakePaymentUseCase(mockPublisher, mockPaymentIdentity);
+        final CreatePaymentUseCase useCase = configuration.createPaymentUseCaseFactory(
+                        mockPublisher,
+                        mockPaymentIdentity)
+                .useCase();
+
         final Basket basket = givenBasketWithBanana();
-        final MakePaymentCommand command = new MakePaymentCommand(basket);
+        final CreatePaymentCommand command = new CreatePaymentCommand(basket);
 
         useCase.execute(command);
 
         verify(mockPublisher).publish(givenPaymentCreatedEvent());
-
-
     }
 
     private static Basket givenBasketWithBanana() {
