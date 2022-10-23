@@ -4,4 +4,5 @@ import lombok.Value;
 
 @Value
 public class PaymentCreatedEvent implements DomainEvent {
+    PaymentId paymentId;
 }

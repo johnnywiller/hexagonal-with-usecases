@@ -6,9 +6,11 @@ import lombok.RequiredArgsConstructor;
 public class MakePaymentUseCase {
 
     private final EventPublisherPort eventPublisher;
+    private final PaymentIdentityPort paymentIdentityPort;
 
     void execute(MakePaymentCommand command) {
 
-        eventPublisher.publish(new PaymentCreatedEvent());
+        final PaymentCreatedEvent createdPayment = new PaymentCreatedEvent(paymentIdentityPort.nextIdentity());
+        eventPublisher.publish(createdPayment);
     }
 }
