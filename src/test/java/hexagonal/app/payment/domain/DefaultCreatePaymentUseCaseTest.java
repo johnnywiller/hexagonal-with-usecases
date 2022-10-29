@@ -15,6 +15,7 @@ class DefaultCreatePaymentUseCaseTest {
     void shouldCreatePayment() {
         final CreatePaymentUseCase useCase = aCreatePaymentUseCase()
                 .withFixedIdentity()
+                .withSuccessReservation()
                 .expectingOnePublishedEvent(givenPaymentCreatedEventOfFiveUSD());
 
         final Basket basket = givenBasketWithBanana();
