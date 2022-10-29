@@ -20,6 +20,10 @@ public class CardReservationResult {
         return reservationStatus == SUCCESS;
     }
 
+    boolean isRejected() {
+        return reservationStatus == REJECTED;
+    }
+
     static CardReservationResult success() {
         return new CardReservationResult(SUCCESS);
     }
