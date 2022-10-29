@@ -21,7 +21,9 @@ public interface PaymentUseCaseBuilder extends
                 makeUseCase(paymentIdentity, cardReservation, publisher);
     }
 
-    private static CreatePaymentUseCase makeUseCase(PaymentIdentityPort paymentIdentity, CardReservationPort cardReservation, EventPublisherPort publisher) {
+    private static CreatePaymentUseCase makeUseCase(PaymentIdentityPort paymentIdentity,
+                                                    CardReservationPort cardReservation,
+                                                    EventPublisherPort publisher) {
         final CreatePaymentUseCase useCase = DOMAIN_CONFIGURATION
                 .createPaymentUseCaseFactory(
                         publisher,
@@ -29,9 +31,13 @@ public interface PaymentUseCaseBuilder extends
                         cardReservation)
                 .useCase();
 
-        final PublishedEventsEnforcer publishedEventsEnforcer = new PublishedEventsEnforcer(useCase, publisher);
-
-        return publishedEventsEnforcer;
+        /*
+         not ideal to create this double layer of CreatePaymentUseCase
+         but necessary since a
+         UseCase<CreatePaymentCommand> is not the same as a CreatePaymentUseCase,
+         avoiding this double layer would involve some sort of AOP/proxy
+        */
+        return new PublishedEventsEnforcer<>(useCase, publisher)::execute;
     }
 
 }

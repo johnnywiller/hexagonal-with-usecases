@@ -6,7 +6,8 @@ public interface CreatePaymentUseCaseFactory {
 
     CreatePaymentUseCase useCase();
 
-    interface CreatePaymentUseCase {
+    interface CreatePaymentUseCase extends UseCase<CreatePaymentCommand> {
+        @Override
         void execute(CreatePaymentCommand command);
     }
 }

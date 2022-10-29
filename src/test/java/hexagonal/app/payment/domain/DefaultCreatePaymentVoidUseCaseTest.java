@@ -9,7 +9,7 @@ import java.util.Set;
 import static hexagonal.app.payment.domain.PaymentUseCaseBuilder.aCreatePaymentUseCase;
 import static org.joda.money.CurrencyUnit.USD;
 
-class DefaultCreatePaymentUseCaseTest {
+class DefaultCreatePaymentVoidUseCaseTest {
 
     @Test
     void shouldCreatePayment() {
