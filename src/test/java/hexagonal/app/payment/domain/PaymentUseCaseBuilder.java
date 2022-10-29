@@ -1,18 +1,18 @@
 package hexagonal.app.payment.domain;
 
-import hexagonal.app.payment.domain.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
 import hexagonal.app.payment.domain.PortMockingCatalog.EventPublisherPortMock;
 import hexagonal.app.payment.domain.PortMockingCatalog.PaymentIdentityPortMock;
+import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
 
 public interface PaymentUseCaseBuilder extends
         PaymentIdentityPortMock<
                 EventPublisherPortMock<
                         CreatePaymentUseCase>> {
 
-    PaymentDomainConfiguration CONFIGURATION = new PaymentDomainConfiguration();
+    PaymentDomainConfiguration DOMAIN_CONFIGURATION = new PaymentDomainConfiguration();
 
     static PaymentUseCaseBuilder aCreatePaymentUseCase() {
-        return paymentIdentity -> publisher -> CONFIGURATION
+        return paymentIdentity -> publisher -> DOMAIN_CONFIGURATION
                 .createPaymentUseCaseFactory(
                         publisher,
                         paymentIdentity)

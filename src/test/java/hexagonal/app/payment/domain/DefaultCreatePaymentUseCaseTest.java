@@ -1,6 +1,6 @@
 package hexagonal.app.payment.domain;
 
-import hexagonal.app.payment.domain.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
+import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
 import org.joda.money.Money;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +14,8 @@ class DefaultCreatePaymentUseCaseTest {
     @Test
     void shouldCreatePayment() {
         final CreatePaymentUseCase useCase = aCreatePaymentUseCase()
-                .withSharedIdentity()
-                .expectingOnePublishedEvent(givenPaymentCreatedEvent());
+                .withFixedIdentity()
+                .expectingOnePublishedEvent(givenPaymentCreatedEventOfFiveUSD());
 
         final Basket basket = givenBasketWithBanana();
         final CreatePaymentCommand command = new CreatePaymentCommand(basket);
@@ -27,7 +27,7 @@ class DefaultCreatePaymentUseCaseTest {
         return new Basket(Set.of(new Product("Banana", Money.of(USD, 0.5))));
     }
 
-    private static PaymentCreatedEvent givenPaymentCreatedEvent() {
+    private static PaymentCreatedEvent givenPaymentCreatedEventOfFiveUSD() {
         return new PaymentCreatedEvent(givenPaymentIdentity(), Money.of(USD, 0.5));
     }
 

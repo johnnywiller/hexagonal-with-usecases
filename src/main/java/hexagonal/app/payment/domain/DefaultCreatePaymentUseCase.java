@@ -1,6 +1,8 @@
 package hexagonal.app.payment.domain;
 
-import hexagonal.app.payment.domain.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
+import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
+import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
+import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
 import lombok.RequiredArgsConstructor;
 import org.joda.money.Money;
 
