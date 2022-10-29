@@ -17,7 +17,7 @@ public class CardReservationResult {
     }
 
     boolean isSuccessful() {
-        return false;
+        return reservationStatus == SUCCESS;
     }
 
     static CardReservationResult success() {
