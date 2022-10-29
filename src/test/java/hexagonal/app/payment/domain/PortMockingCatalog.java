@@ -47,10 +47,16 @@ public interface PortMockingCatalog {
         }
 
         private static EventPublisherPort expectingZeroEventsMock() {
-            final EventPublisherPort mock = event -> {
-                throw new RuntimeException("Event not expected");
+            return new SelfValidatingEventPublisherPort() {
+                @Override
+                public void ensureAllEventsWereSent() {
+                }
+
+                @Override
+                public void publish(DomainEvent event) {
+                    throw new RuntimeException("Event not expected = " + event);
+                }
             };
-            return mock;
         }
     }
 

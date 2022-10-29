@@ -24,6 +24,19 @@ class DefaultCreatePaymentVoidUseCaseTest {
         useCase.execute(command);
     }
 
+    @Test
+    void shouldNotCreatePaymentIfReservationFails() {
+        final CreatePaymentUseCase useCase = aCreatePaymentUseCase()
+                .withFixedIdentity()
+                .withRejectedReservation()
+                .expectingZeroPublishedEvents();
+
+        final Basket basket = givenBasketWithBanana();
+        final CreatePaymentCommand command = new CreatePaymentCommand(basket);
+
+        useCase.execute(command);
+    }
+
     private static Basket givenBasketWithBanana() {
         return new Basket(Set.of(new Product("Banana", Money.of(USD, 0.5))));
     }
