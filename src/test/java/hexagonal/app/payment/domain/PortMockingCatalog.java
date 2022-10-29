@@ -3,9 +3,6 @@ package hexagonal.app.payment.domain;
 import hexagonal.app.payment.domain.port.driven.CardReservationPort;
 import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.doAnswer;
 
 public interface PortMockingCatalog {
 
@@ -24,21 +21,29 @@ public interface PortMockingCatalog {
             return aMockWhichChecksCorrectArgumentIsPassed(paymentCreatedEvent);
         }
 
+
         /**
-         * Little mockito hack to validate the correctness of the passed event
-         * since when() can't work fine with void methods. If the event is
-         * correct we don't want to do anything
+         * This mocked object checks the validity of passed {@link DomainEvent}
+         * plus self validates if the method was ever called
          */
-        private static EventPublisherPort aMockWhichChecksCorrectArgumentIsPassed(PaymentCreatedEvent paymentCreatedEvent) {
-            final EventPublisherPort mock = Mockito.mock(EventPublisherPort.class);
-            doAnswer(invocation -> {
-                        final DomainEvent event = invocation.getArgument(0);
-                        if (!event.equals(paymentCreatedEvent))
-                            throw new RuntimeException("Invalid event, the expected is " + paymentCreatedEvent);
-                        return null;
-                    }).when(mock)
-                    .publish(Mockito.any());
-            return mock;
+        private static SelfValidatingEventPublisherPort aMockWhichChecksCorrectArgumentIsPassed(
+                PaymentCreatedEvent paymentCreatedEvent) {
+            return new SelfValidatingEventPublisherPort() {
+                boolean sent = false;
+
+                @Override
+                public void ensureAllEventsWereSent() {
+                    if (!sent)
+                        throw new RuntimeException("One event was expected to be sent = " + paymentCreatedEvent);
+                }
+
+                @Override
+                public void publish(DomainEvent event) {
+                    if (!event.equals(paymentCreatedEvent))
+                        throw new RuntimeException("Invalid event, the expected is " + paymentCreatedEvent);
+                    sent = true;
+                }
+            };
         }
 
         private static EventPublisherPort expectingZeroEventsMock() {
