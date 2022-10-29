@@ -1,22 +1,43 @@
 package hexagonal.app.payment.domain;
 
-import hexagonal.app.payment.domain.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
+import hexagonal.app.payment.domain.PortMockingCatalog.CardReservationPortMock;
 import hexagonal.app.payment.domain.PortMockingCatalog.EventPublisherPortMock;
 import hexagonal.app.payment.domain.PortMockingCatalog.PaymentIdentityPortMock;
+import hexagonal.app.payment.domain.port.driven.CardReservationPort;
+import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
+import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
+import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
 
 public interface PaymentUseCaseBuilder extends
         PaymentIdentityPortMock<
-                EventPublisherPortMock<
-                        CreatePaymentUseCase>> {
+                CardReservationPortMock<
+                        EventPublisherPortMock<
+                                CreatePaymentUseCase>>> {
 
-    PaymentDomainConfiguration CONFIGURATION = new PaymentDomainConfiguration();
+    PaymentDomainConfiguration DOMAIN_CONFIGURATION = new PaymentDomainConfiguration();
 
     static PaymentUseCaseBuilder aCreatePaymentUseCase() {
-        return paymentIdentity -> publisher -> CONFIGURATION
+        return paymentIdentity -> cardReservation -> publisher ->
+                makeUseCase(paymentIdentity, cardReservation, publisher);
+    }
+
+    private static CreatePaymentUseCase makeUseCase(PaymentIdentityPort paymentIdentity,
+                                                    CardReservationPort cardReservation,
+                                                    EventPublisherPort publisher) {
+        final CreatePaymentUseCase useCase = DOMAIN_CONFIGURATION
                 .createPaymentUseCaseFactory(
                         publisher,
-                        paymentIdentity)
+                        paymentIdentity,
+                        cardReservation)
                 .useCase();
+
+        /*
+         not ideal to create this double layer of CreatePaymentUseCase
+         but necessary since a
+         UseCase<CreatePaymentCommand> is not the same as a CreatePaymentUseCase,
+         avoiding this double layer would involve some sort of AOP/proxy
+        */
+        return new PublishedEventsEnforcer<>(useCase, publisher)::execute;
     }
 
 }
