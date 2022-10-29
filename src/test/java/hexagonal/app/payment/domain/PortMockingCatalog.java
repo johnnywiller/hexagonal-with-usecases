@@ -14,11 +14,14 @@ public interface PortMockingCatalog {
         }
 
         default NEXT_STEP expectingOnePublishedEvent(PaymentCreatedEvent paymentCreatedEvent) {
-            final EventPublisherPort mock = event -> {
+            return withPublisher(expectingOneEventMock(paymentCreatedEvent));
+        }
+
+        private static EventPublisherPort expectingOneEventMock(PaymentCreatedEvent paymentCreatedEvent) {
+            return event -> {
                 if (!event.equals(paymentCreatedEvent))
                     throw new RuntimeException("Invalid event, the expected is " + paymentCreatedEvent);
             };
-            return withPublisher(mock);
         }
 
         private static EventPublisherPort expectingZeroEventsMock() {
