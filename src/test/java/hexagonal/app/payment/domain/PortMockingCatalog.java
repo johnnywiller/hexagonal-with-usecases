@@ -40,7 +40,7 @@ public interface PortMockingCatalog {
                 @Override
                 public void publish(DomainEvent event) {
                     if (!event.equals(paymentCreatedEvent))
-                        throw new RuntimeException("Invalid event, the expected is " + paymentCreatedEvent);
+                        throw new RuntimeException(String.format("Invalid event, the expected is %s but it was %s", paymentCreatedEvent, event));
                     sent = true;
                 }
             };

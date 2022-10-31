@@ -27,7 +27,4 @@ public class DefaultCreatePaymentUseCase implements CreatePaymentUseCase {
             eventPublisher.publish(createdPayment);
         }
     }
-
-
-
 }
