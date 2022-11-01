@@ -22,8 +22,6 @@ class DefaultCreatePaymentVoidUseCaseTest {
         );
     }
 
-
-
     private static Basket givenBasketWithMultipleFruits() {
         return new Basket(Set.of(
                 new Product("Banana", Money.of(USD, 0.5)),

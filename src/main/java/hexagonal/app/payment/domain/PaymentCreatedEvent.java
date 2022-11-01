@@ -1,11 +1,8 @@
 package hexagonal.app.payment.domain;
 
-import lombok.Value;
 import org.joda.money.Money;
 
-@Value
-public class PaymentCreatedEvent implements DomainEvent {
+public record PaymentCreatedEvent(PaymentId paymentId,
+                                  Money amount) implements DomainEvent {
 
-    PaymentId paymentId;
-    Money amount;
 }
