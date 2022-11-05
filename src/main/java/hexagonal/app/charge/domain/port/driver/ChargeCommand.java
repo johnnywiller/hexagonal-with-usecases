@@ -1,4 +1,7 @@
 package hexagonal.app.charge.domain.port.driver;
 
-public record ChargeCommand() {
+import hexagonal.app.payment.domain.PaymentId;
+
+public record ChargeCommand(PaymentId paymentId) {
+
 }

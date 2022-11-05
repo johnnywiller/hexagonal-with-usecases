@@ -8,7 +8,5 @@ public interface ChargeUseCaseFactory {
 
     interface ChargeUseCase extends UseCase<ChargeCommand> {
 
-        void charge(ChargeCommand request);
-
     }
 }

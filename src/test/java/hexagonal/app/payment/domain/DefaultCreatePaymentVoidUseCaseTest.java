@@ -15,11 +15,18 @@ import static org.joda.money.CurrencyUnit.USD;
 
 class DefaultCreatePaymentVoidUseCaseTest {
 
-    public static Stream<Arguments> givenBasketsAndCorrespondingTotals() {
-        return Stream.of(
-                Arguments.of(givenBasketWithBanana(), Money.of(USD, 0.5)),
-                Arguments.of(givenBasketWithMultipleFruits(), Money.of(USD, 11.3))
-        );
+    @ParameterizedTest
+    @MethodSource("givenBasketsAndCorrespondingTotals")
+    void shouldCreatePayment(Basket basket, Money basketTotal) {
+        final CreatePaymentUseCase useCase = aCreatePaymentUseCase()
+                .withFixedIdentity()
+                .withSuccessReservation()
+                .expectingOnePublishedEvent(givenPaymentCreatedEventOfAmount(basketTotal));
+
+
+        final CreatePaymentCommand command = new CreatePaymentCommand(basket);
+
+        useCase.execute(command);
     }
 
     private static Basket givenBasketWithMultipleFruits() {
@@ -35,18 +42,11 @@ class DefaultCreatePaymentVoidUseCaseTest {
         return new Basket(Set.of(new Product("Banana", Money.of(USD, 0.5))));
     }
 
-    @ParameterizedTest
-    @MethodSource("givenBasketsAndCorrespondingTotals")
-    void shouldCreatePayment(Basket basket, Money basketTotal) {
-        final CreatePaymentUseCase useCase = aCreatePaymentUseCase()
-                .withFixedIdentity()
-                .withSuccessReservation()
-                .expectingOnePublishedEvent(givenPaymentCreatedEventOfAmount(basketTotal));
-
-
-        final CreatePaymentCommand command = new CreatePaymentCommand(basket);
-
-        useCase.execute(command);
+    public static Stream<Arguments> givenBasketsAndCorrespondingTotals() {
+        return Stream.of(
+                Arguments.of(givenBasketWithBanana(), Money.of(USD, 0.5)),
+                Arguments.of(givenBasketWithMultipleFruits(), Money.of(USD, 11.3))
+        );
     }
 
     private static PaymentCreatedEvent givenPaymentCreatedEventOfAmount(Money amount) {
