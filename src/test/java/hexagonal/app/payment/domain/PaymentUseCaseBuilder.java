@@ -1,12 +1,12 @@
 package hexagonal.app.payment.domain;
 
 import hexagonal.app.payment.domain.PaymentPortMockingCatalog.CardReservationPortMock;
-import hexagonal.app.payment.domain.PaymentPortMockingCatalog.EventPublisherPortMock;
 import hexagonal.app.payment.domain.PaymentPortMockingCatalog.PaymentIdentityPortMock;
 import hexagonal.app.payment.domain.port.driven.CardReservationPort;
-import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
 import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
+import hexagonal.app.shared.EventPublisherPort;
+import hexagonal.app.shared.SharedPortMockingCatalog.EventPublisherPortMock;
 
 public interface PaymentUseCaseBuilder extends
         PaymentIdentityPortMock<
