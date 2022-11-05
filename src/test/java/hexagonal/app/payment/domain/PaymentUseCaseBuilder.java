@@ -6,6 +6,7 @@ import hexagonal.app.payment.domain.port.driven.CardReservationPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
 import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
 import hexagonal.app.shared.EventPublisherPort;
+import hexagonal.app.shared.PublishedEventsEnforcer;
 import hexagonal.app.shared.SharedPortMockingCatalog.EventPublisherPortMock;
 
 public interface PaymentUseCaseBuilder extends

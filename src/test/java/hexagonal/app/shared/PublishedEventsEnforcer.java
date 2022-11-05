@@ -1,6 +1,5 @@
-package hexagonal.app.payment.domain;
+package hexagonal.app.shared;
 
-import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
 import hexagonal.app.payment.domain.port.driver.UseCase;
 
 /**

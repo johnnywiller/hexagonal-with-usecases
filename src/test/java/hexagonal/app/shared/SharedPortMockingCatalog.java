@@ -1,7 +1,5 @@
 package hexagonal.app.shared;
 
-import hexagonal.app.payment.domain.SelfValidatingEventPublisherPort;
-
 public interface SharedPortMockingCatalog {
 
     interface EventPublisherPortMock<NEXT_STEP> {
