@@ -1,0 +1,39 @@
+package hexagonal.app.charge.domain;
+
+import hexagonal.app.charge.domain.PortMockingCatalog.ReservationPortMock;
+import hexagonal.app.charge.domain.port.driven.GetReservationPort;
+import hexagonal.app.charge.domain.port.driver.ChargeUseCaseFactory.ChargeUseCase;
+import hexagonal.app.payment.domain.PortMockingCatalog.EventPublisherPortMock;
+import hexagonal.app.payment.domain.PublishedEventsEnforcer;
+import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
+
+public interface ChargeUseCaseBuilder extends
+        ReservationPortMock<
+                EventPublisherPortMock<
+                        ChargeUseCase>> {
+
+    ChargeDomainConfiguration DOMAIN_CONFIGURATION = new ChargeDomainConfiguration();
+
+    static ChargeUseCaseBuilder aChargeUseCase() {
+        return reservation -> publisher ->
+                makeUseCase(reservation, publisher);
+    }
+
+    private static ChargeUseCase makeUseCase(GetReservationPort reservationPort,
+                                             EventPublisherPort publisher) {
+        final ChargeUseCase useCase = DOMAIN_CONFIGURATION
+                .createChargeUseCaseFactory(
+                        publisher,
+                        reservationPort)
+                .useCase();
+
+        /*
+         not ideal to create this double layer of ChargeUseCase
+         but necessary since a
+         UseCase<ChargeCommand> is not the same as a ChargeUseCase,
+         avoiding this double layer would involve some sort of AOP/proxy
+        */
+        return new PublishedEventsEnforcer<>(useCase, publisher)::execute;
+    }
+
+}
