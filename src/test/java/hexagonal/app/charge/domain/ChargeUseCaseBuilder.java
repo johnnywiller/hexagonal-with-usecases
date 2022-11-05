@@ -9,8 +9,9 @@ import hexagonal.app.shared.SharedPortMockingCatalog.EventPublisherPortMock;
 
 public interface ChargeUseCaseBuilder extends
         ReservationPortMock<
-                EventPublisherPortMock<
-                                        ChargeUseCase>> {
+                ChargeResultPortMock<
+                        EventPublisherPortMock<
+                                ChargeUseCase>>> {
 
     ChargeDomainConfiguration DOMAIN_CONFIGURATION = new ChargeDomainConfiguration();
 

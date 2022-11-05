@@ -18,6 +18,9 @@ class DefaultChargeUseCaseTest {
 
     @Test
     void shouldSendCustomerEmailIfChargeFails() {
-
+        ChargeUseCaseBuilder.aChargeUseCase()
+                .withReservationOf100Euros()
+                .withDeclinedChargeResult()
+                .expecting
     }
 }
