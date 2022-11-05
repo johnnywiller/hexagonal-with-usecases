@@ -12,9 +12,8 @@ class DefaultChargeUseCaseTest {
     void shouldCreateCharge() {
         final ChargeUseCase useCase = ChargeUseCaseBuilder.aChargeUseCase()
                 .withReservationOf100Euros()
-                .expectingZeroPublishedEvents();
+                .expectingOnePublishedEvent(new ChargeCompletedEvent(new PaymentId("some id")));
 
         useCase.execute(new ChargeCommand(new PaymentId("some id")));
-
     }
 }

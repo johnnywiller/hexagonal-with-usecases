@@ -1,9 +1,9 @@
 package hexagonal.app.charge.domain;
 
-import hexagonal.app.charge.domain.PortMockingCatalog.ReservationPortMock;
+import hexagonal.app.charge.domain.ChargePortMockingCatalog.ReservationPortMock;
 import hexagonal.app.charge.domain.port.driven.GetReservationPort;
 import hexagonal.app.charge.domain.port.driver.ChargeUseCaseFactory.ChargeUseCase;
-import hexagonal.app.payment.domain.PortMockingCatalog.EventPublisherPortMock;
+import hexagonal.app.payment.domain.PaymentPortMockingCatalog.EventPublisherPortMock;
 import hexagonal.app.payment.domain.PublishedEventsEnforcer;
 import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
 

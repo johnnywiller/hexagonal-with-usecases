@@ -1,6 +1,6 @@
 package hexagonal.app.payment.domain;
 
-import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
+import hexagonal.app.shared.EventPublisherPort;
 
 /**
  * Main purpose of this interface is to add a behaviour that ensures all events

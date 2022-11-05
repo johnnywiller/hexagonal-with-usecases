@@ -1,8 +1,8 @@
 package hexagonal.app.payment.domain;
 
-import hexagonal.app.payment.domain.PortMockingCatalog.CardReservationPortMock;
-import hexagonal.app.payment.domain.PortMockingCatalog.EventPublisherPortMock;
-import hexagonal.app.payment.domain.PortMockingCatalog.PaymentIdentityPortMock;
+import hexagonal.app.payment.domain.PaymentPortMockingCatalog.CardReservationPortMock;
+import hexagonal.app.payment.domain.PaymentPortMockingCatalog.EventPublisherPortMock;
+import hexagonal.app.payment.domain.PaymentPortMockingCatalog.PaymentIdentityPortMock;
 import hexagonal.app.payment.domain.port.driven.CardReservationPort;
 import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;

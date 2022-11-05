@@ -1,15 +1,8 @@
-package hexagonal.app.charge.domain;
+package hexagonal.app.shared;
 
-import hexagonal.app.charge.domain.port.driven.GetReservationPort;
-import hexagonal.app.payment.domain.DomainEvent;
-import hexagonal.app.payment.domain.PaymentCreatedEvent;
-import hexagonal.app.payment.domain.PaymentId;
 import hexagonal.app.payment.domain.SelfValidatingEventPublisherPort;
-import hexagonal.app.payment.domain.port.driven.EventPublisherPort;
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
 
-public interface PortMockingCatalog {
+public interface SharedPortMockingCatalog {
 
     interface EventPublisherPortMock<NEXT_STEP> {
         NEXT_STEP withPublisher(EventPublisherPort publisher);
@@ -18,11 +11,11 @@ public interface PortMockingCatalog {
             return withPublisher(expectingZeroEventsMock());
         }
 
-        default NEXT_STEP expectingOnePublishedEvent(PaymentCreatedEvent paymentCreatedEvent) {
-            return withPublisher(expectingOneEventMock(paymentCreatedEvent));
+        default NEXT_STEP expectingOnePublishedEvent(DomainEvent expectedDomainEvent) {
+            return withPublisher(expectingOneEventMock(expectedDomainEvent));
         }
 
-        private static EventPublisherPort expectingOneEventMock(PaymentCreatedEvent paymentCreatedEvent) {
+        private static EventPublisherPort expectingOneEventMock(DomainEvent paymentCreatedEvent) {
             return aMockWhichChecksCorrectArgumentIsPassed(paymentCreatedEvent);
         }
 
@@ -32,20 +25,20 @@ public interface PortMockingCatalog {
          * plus self validates if the method was ever called
          */
         private static SelfValidatingEventPublisherPort aMockWhichChecksCorrectArgumentIsPassed(
-                PaymentCreatedEvent paymentCreatedEvent) {
+                DomainEvent expectedDomainEvent) {
             return new SelfValidatingEventPublisherPort() {
                 boolean sent = false;
 
                 @Override
                 public void ensureAllEventsWereSent() {
                     if (!sent)
-                        throw new RuntimeException("One event was expected to be sent = " + paymentCreatedEvent);
+                        throw new RuntimeException("One event was expected to be sent = " + expectedDomainEvent);
                 }
 
                 @Override
                 public void publish(DomainEvent event) {
-                    if (!event.equals(paymentCreatedEvent))
-                        throw new RuntimeException(String.format("Invalid event, the expected is %s but it was %s", paymentCreatedEvent, event));
+                    if (!event.equals(expectedDomainEvent))
+                        throw new RuntimeException(String.format("Invalid event, the expected is %s but it was %s", expectedDomainEvent, event));
                     sent = true;
                 }
             };
@@ -62,17 +55,6 @@ public interface PortMockingCatalog {
                     throw new RuntimeException("Event not expected = " + event);
                 }
             };
-        }
-    }
-
-    interface ReservationPortMock<NEXT_STEP> {
-        NEXT_STEP withReservation(GetReservationPort getReservation);
-
-        default NEXT_STEP withReservationOf100Euros() {
-            return withReservation(paymentId -> new Reservation(
-                    new PaymentId("c473159b-d25b-4068-af1e-60cd71d91c16"),
-                    Money.of(CurrencyUnit.EUR, 100),
-                    "token from bank"));
         }
     }
 
