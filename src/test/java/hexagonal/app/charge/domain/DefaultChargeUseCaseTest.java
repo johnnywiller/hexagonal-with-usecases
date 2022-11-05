@@ -7,13 +7,17 @@ import org.junit.jupiter.api.Test;
 
 class DefaultChargeUseCaseTest {
 
-
     @Test
-    void shouldCreateCharge() {
+    void shouldCreateChargeIfReservationIsOk() {
         final ChargeUseCase useCase = ChargeUseCaseBuilder.aChargeUseCase()
                 .withReservationOf100Euros()
-                .expectingOnePublishedEvent(new ChargeCompletedEvent(new PaymentId("some id")));
+                .expectingOnePublishedEvent(new ChargeCompletedEvent(new PaymentId("c473159b-d25b-4068-af1e-60cd71d91c16")));
 
         useCase.execute(new ChargeCommand(new PaymentId("some id")));
+    }
+
+    @Test
+    void shouldSendCustomerEmailIfChargeFails() {
+
     }
 }
