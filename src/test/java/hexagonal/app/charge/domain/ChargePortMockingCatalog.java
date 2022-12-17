@@ -19,11 +19,14 @@ public interface ChargePortMockingCatalog {
         }
     }
 
-    interface ChargeResultPortMock<NEXT_STEP> {
+    interface MakeChargePortMock<NEXT_STEP> {
         NEXT_STEP withChargeResult(MakeChargePort makeCharge);
 
         default NEXT_STEP withDeclinedCharge() {
-            return withChargeResult(reservation -> new ChargeResult(reservation.payment()));
+            return withChargeResult(reservation -> ChargeResult.rejected());
+        }
+        default NEXT_STEP withSuccessfulCharge() {
+            return withChargeResult(reservation -> ChargeResult.success());
         }
     }
 

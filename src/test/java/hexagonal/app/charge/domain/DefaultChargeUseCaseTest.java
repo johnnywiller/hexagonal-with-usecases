@@ -11,6 +11,7 @@ class DefaultChargeUseCaseTest {
     void shouldCreateChargeIfReservationIsOk() {
         final ChargeUseCase useCase = ChargeUseCaseBuilder.aChargeUseCase()
                 .withReservationOf100Euros()
+                .withSuccessfulCharge()
                 .expectingOnePublishedEvent(new ChargeCompletedEvent(new PaymentId("c473159b-d25b-4068-af1e-60cd71d91c16")));
 
         useCase.execute(new ChargeCommand(new PaymentId("some id")));
@@ -20,7 +21,7 @@ class DefaultChargeUseCaseTest {
     void shouldSendCustomerEmailIfChargeFails() {
         ChargeUseCaseBuilder.aChargeUseCase()
                 .withReservationOf100Euros()
-                .withDeclinedChargeResult()
-                .expecting
+                .withDeclinedCharge()
+                .expectingZeroPublishedEvents();
     }
 }
