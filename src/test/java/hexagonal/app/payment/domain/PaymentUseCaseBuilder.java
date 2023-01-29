@@ -41,8 +41,8 @@ public interface PaymentUseCaseBuilder extends
                         publisher,
                         paymentIdentity,
                         cardReservation,
-                        command, new SimpleMeterRegistry())
-                .createPaymentUseCase();
+                        new SimpleMeterRegistry())
+                .createPaymentUseCase(command);
 
         return new PublishedEventsEnforcer(useCase, publisher);
     }

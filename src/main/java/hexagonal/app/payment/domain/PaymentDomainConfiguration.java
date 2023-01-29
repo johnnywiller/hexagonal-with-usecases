@@ -6,16 +6,17 @@ import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory;
 import hexagonal.app.shared.EventPublisherPort;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class PaymentDomainConfiguration {
 
     @Bean
     CreatePaymentUseCaseFactory createPaymentUseCaseFactory(EventPublisherPort eventPublisherAdapter,
                                                             PaymentIdentityPort paymentIdentityAdapter,
                                                             CardReservationPort cardReservationAdapter,
-                                                            CreatePaymentCommand command,
                                                             MeterRegistry simpleMeterRegistry) {
-        return () -> {
+        return command -> {
             DefaultCreatePaymentUseCase useCase =
                     new DefaultCreatePaymentUseCase(
                             eventPublisherAdapter,
