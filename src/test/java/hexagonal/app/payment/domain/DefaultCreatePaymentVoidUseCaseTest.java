@@ -1,6 +1,6 @@
 package hexagonal.app.payment.domain;
 
-import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
+import hexagonal.app.payment.domain.port.driver.UseCase;
 import org.joda.money.Money;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,15 +18,13 @@ class DefaultCreatePaymentVoidUseCaseTest {
     @ParameterizedTest
     @MethodSource("givenBasketsAndCorrespondingTotals")
     void shouldCreatePayment(Basket basket, Money basketTotal) {
-        final CreatePaymentUseCase useCase = aCreatePaymentUseCase()
+        final CreatePaymentCommand command = new CreatePaymentCommand(basket);
+        final UseCase useCase = aCreatePaymentUseCase(command)
                 .withFixedIdentity()
                 .withSuccessReservation()
                 .expectingOnePublishedEvent(givenPaymentCreatedEventOfAmount(basketTotal));
 
-
-        final CreatePaymentCommand command = new CreatePaymentCommand(basket);
-
-        useCase.execute(command);
+        useCase.execute();
     }
 
     private static Basket givenBasketWithMultipleFruits() {
@@ -55,15 +53,13 @@ class DefaultCreatePaymentVoidUseCaseTest {
 
     @Test
     void shouldNotCreatePaymentIfReservationFails() {
-        final CreatePaymentUseCase useCase = aCreatePaymentUseCase()
+        final CreatePaymentCommand command = new CreatePaymentCommand(givenBasketWithBanana());
+        final UseCase useCase = aCreatePaymentUseCase(command)
                 .withFixedIdentity()
                 .withRejectedReservation()
                 .expectingZeroPublishedEvents();
 
-        final Basket basket = givenBasketWithBanana();
-        final CreatePaymentCommand command = new CreatePaymentCommand(basket);
-
-        useCase.execute(command);
+        useCase.execute();
     }
 
     private static PaymentCreatedEvent givenPaymentCreatedEventOfFiveUSD() {

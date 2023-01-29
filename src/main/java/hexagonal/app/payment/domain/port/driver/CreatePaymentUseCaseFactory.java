@@ -7,8 +7,6 @@ import hexagonal.app.payment.domain.CreatePaymentCommand;
  */
 public interface CreatePaymentUseCaseFactory {
 
-    CreatePaymentUseCase useCase();
+    UseCase createPaymentUseCase(CreatePaymentCommand command);
 
-    interface CreatePaymentUseCase extends UseCase<CreatePaymentCommand> {
-    }
 }

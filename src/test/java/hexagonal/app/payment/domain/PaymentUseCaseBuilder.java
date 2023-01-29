@@ -4,41 +4,47 @@ import hexagonal.app.payment.domain.PaymentPortMockingCatalog.CardReservationPor
 import hexagonal.app.payment.domain.PaymentPortMockingCatalog.PaymentIdentityPortMock;
 import hexagonal.app.payment.domain.port.driven.CardReservationPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
-import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory.CreatePaymentUseCase;
-import hexagonal.app.shared.EventPublisherPort;
-import hexagonal.app.shared.PublishedEventsEnforcer;
+import hexagonal.app.payment.domain.port.driver.UseCase;
+import hexagonal.app.shared.SelfValidatingEventPublisherPort;
 import hexagonal.app.shared.SharedPortMockingCatalog.EventPublisherPortMock;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 public interface PaymentUseCaseBuilder extends
         PaymentIdentityPortMock<
                 CardReservationPortMock<
                         EventPublisherPortMock<
-                                CreatePaymentUseCase>>> {
+                                UseCase>>> {
 
-    PaymentDomainConfiguration DOMAIN_CONFIGURATION = new PaymentDomainConfiguration();
+    PaymentDomainConfiguration DOMAIN_CONFIGURATION =
+            new PaymentDomainConfiguration();
 
-    static PaymentUseCaseBuilder aCreatePaymentUseCase() {
+    /**
+     * Returns a fluent builder to construct a Create Payment UseCase. The
+     * CreatePaymentCommand could also be provided in a fluent style as opposed
+     * to an initial argument like done here.
+     *
+     * @param command
+     * @return
+     */
+    static PaymentUseCaseBuilder aCreatePaymentUseCase(CreatePaymentCommand command) {
         return paymentIdentity -> cardReservation -> publisher ->
-                makeUseCase(paymentIdentity, cardReservation, publisher);
+                makeUseCase(paymentIdentity, cardReservation, publisher,
+                        command);
     }
 
-    private static CreatePaymentUseCase makeUseCase(PaymentIdentityPort paymentIdentity,
-                                                    CardReservationPort cardReservation,
-                                                    EventPublisherPort publisher) {
-        final CreatePaymentUseCase useCase = DOMAIN_CONFIGURATION
+    private static UseCase makeUseCase(PaymentIdentityPort paymentIdentity,
+                                       CardReservationPort cardReservation,
+                                       SelfValidatingEventPublisherPort publisher,
+                                       CreatePaymentCommand command) {
+        final UseCase useCase = DOMAIN_CONFIGURATION
                 .createPaymentUseCaseFactory(
                         publisher,
                         paymentIdentity,
-                        cardReservation)
-                .useCase();
+                        cardReservation,
+                        new SimpleMeterRegistry())
+                .createPaymentUseCase(command);
 
-        /*
-         not ideal to create this double layer of CreatePaymentUseCase
-         but necessary since a
-         UseCase<CreatePaymentCommand> is not the same as a CreatePaymentUseCase,
-         avoiding this double layer would involve some sort of AOP/proxy
-        */
-        return new PublishedEventsEnforcer<>(useCase, publisher)::execute;
+        return new PublishedEventsEnforcer(useCase, publisher);
     }
 
 }

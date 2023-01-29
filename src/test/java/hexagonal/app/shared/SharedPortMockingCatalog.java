@@ -3,7 +3,7 @@ package hexagonal.app.shared;
 public interface SharedPortMockingCatalog {
 
     interface EventPublisherPortMock<NEXT_STEP> {
-        NEXT_STEP withPublisher(EventPublisherPort publisher);
+        NEXT_STEP withPublisher(SelfValidatingEventPublisherPort publisher);
 
         default NEXT_STEP expectingZeroPublishedEvents() {
             return withPublisher(expectingZeroEventsMock());
@@ -13,7 +13,7 @@ public interface SharedPortMockingCatalog {
             return withPublisher(expectingOneEventMock(expectedDomainEvent));
         }
 
-        private static EventPublisherPort expectingOneEventMock(DomainEvent paymentCreatedEvent) {
+        private static SelfValidatingEventPublisherPort expectingOneEventMock(DomainEvent paymentCreatedEvent) {
             return aMockWhichChecksCorrectArgumentIsPassed(paymentCreatedEvent);
         }
 
@@ -42,7 +42,7 @@ public interface SharedPortMockingCatalog {
             };
         }
 
-        private static EventPublisherPort expectingZeroEventsMock() {
+        private static SelfValidatingEventPublisherPort expectingZeroEventsMock() {
             return new SelfValidatingEventPublisherPort() {
                 @Override
                 public void ensureAllEventsWereSent() {
