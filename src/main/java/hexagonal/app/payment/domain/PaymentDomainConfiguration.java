@@ -11,10 +11,12 @@ public class PaymentDomainConfiguration {
     @Bean
     CreatePaymentUseCaseFactory createPaymentUseCaseFactory(EventPublisherPort eventPublisherAdapter,
                                                             PaymentIdentityPort paymentIdentityAdapter,
-                                                            CardReservationPort cardReservationAdapter) {
+                                                            CardReservationPort cardReservationAdapter,
+                                                            CreatePaymentCommand command) {
         return () -> new DefaultCreatePaymentUseCase(
                 eventPublisherAdapter,
                 paymentIdentityAdapter,
-                cardReservationAdapter);
+                cardReservationAdapter,
+                command);
     }
 }

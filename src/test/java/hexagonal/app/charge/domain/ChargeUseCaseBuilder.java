@@ -6,7 +6,6 @@ import hexagonal.app.charge.domain.port.driven.GetReservationPort;
 import hexagonal.app.charge.domain.port.driven.MakeChargePort;
 import hexagonal.app.charge.domain.port.driver.ChargeUseCaseFactory.ChargeUseCase;
 import hexagonal.app.shared.EventPublisherPort;
-import hexagonal.app.shared.PublishedEventsEnforcer;
 import hexagonal.app.shared.SharedPortMockingCatalog.EventPublisherPortMock;
 
 public interface ChargeUseCaseBuilder extends
@@ -38,7 +37,7 @@ public interface ChargeUseCaseBuilder extends
          UseCase<ChargeCommand> is not the same as a ChargeUseCase,
          avoiding this double layer would involve some sort of AOP/proxy
         */
-        return new PublishedEventsEnforcer<>(useCase, publisher)::execute;
+        return new ReusableUseCasePublishedEventsEnforcer<>(useCase, publisher)::execute;
     }
 
 }
