@@ -7,6 +7,7 @@ import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
 import hexagonal.app.payment.domain.port.driver.UseCase;
 import hexagonal.app.shared.SelfValidatingEventPublisherPort;
 import hexagonal.app.shared.SharedPortMockingCatalog.EventPublisherPortMock;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 public interface PaymentUseCaseBuilder extends
         PaymentIdentityPortMock<
@@ -40,7 +41,7 @@ public interface PaymentUseCaseBuilder extends
                         publisher,
                         paymentIdentity,
                         cardReservation,
-                        command)
+                        command, new SimpleMeterRegistry())
                 .createPaymentUseCase();
 
         return new PublishedEventsEnforcer(useCase, publisher);
