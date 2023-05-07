@@ -21,6 +21,7 @@ public record UseCaseMetricsDecorator(MeterRegistry meterRegistry,
                                       DefaultCreatePaymentUseCase delegate) implements UseCase {
     @Override
     public void execute() {
+        // TODO place tagging in a more appropriate place
         Counter counter;
         try {
             Tags tags = Tags.of(Tag.of("env", randomEnvTag()),
