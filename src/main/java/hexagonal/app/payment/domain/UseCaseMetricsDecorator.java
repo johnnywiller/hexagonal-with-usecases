@@ -10,6 +10,7 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
+import io.micrometer.core.instrument.Timer;
 
 /**
  * Simple decorator to count calls to the usecase via Micrometer
@@ -34,7 +35,11 @@ public record UseCaseMetricsDecorator(MeterRegistry meterRegistry,
         }
         counter.increment();
 
+        Timer.Sample sample = Timer.start();
+        Timer timer = meterRegistry.timer("my.timer");
         delegate.execute();
+        long stop = sample.stop(timer);
+        System.out.println("stop = " + stop);
     }
 
     private String randomEnvTag() {
