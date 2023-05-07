@@ -6,6 +6,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Simple decorator to count calls to the usecase via Micrometer
+ *
  * @param meterRegistry
  * @param delegate
  */

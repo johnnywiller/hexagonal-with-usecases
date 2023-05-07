@@ -1,6 +1,9 @@
 package hexagonal.app.payment.domain;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import org.joda.money.Money;
+import org.slf4j.Logger;
 
 import hexagonal.app.payment.domain.port.driven.CardReservationPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
@@ -9,6 +12,7 @@ import hexagonal.app.shared.EventPublisherPort;
 
 public class DefaultCreatePaymentUseCase implements UseCase {
 
+    private static final Logger log = getLogger(DefaultCreatePaymentUseCase.class);
     private final EventPublisherPort eventPublisher;
     private final PaymentIdentityPort paymentIdentityPort;
     private final CardReservationPort cardReservationPort;
@@ -26,6 +30,7 @@ public class DefaultCreatePaymentUseCase implements UseCase {
 
     @Override
     public void execute() {
+        log.info("Creating payment for {}", command);
         Money paymentAmount = command.basket().total();
         final PaymentCreatedEvent createdPayment = new PaymentCreatedEvent(
                 paymentIdentityPort.nextIdentity(),
