@@ -1,12 +1,13 @@
 package hexagonal.app.payment.domain;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import hexagonal.app.payment.domain.port.driven.CardReservationPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
 import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory;
 import hexagonal.app.shared.EventPublisherPort;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class PaymentDomainConfiguration {
