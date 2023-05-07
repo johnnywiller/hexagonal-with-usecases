@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import hexagonal.app.payment.domain.CardReservationResult;
 import hexagonal.app.payment.domain.port.driven.CardReservationPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
 import hexagonal.app.payment.domain.port.driver.CreatePaymentUseCaseFactory;
@@ -25,13 +26,21 @@ public class PaymentInfrastructureConfiguration {
         return () -> null;
     }
 
+    /**
+     * For now, we just fake a success reservation result,
+     * in reality we would have an adapter communicating with some backend
+     * to reserve the money on the card
+     *
+     * @return an always success {@link CardReservationPort} adapter
+     */
     @Bean
     CardReservationPort cardReservationAdapter() {
-        return () -> null;
+        return CardReservationResult::success;
     }
 
     /**
      * Scheduler that creates payments, for sampling purposes
+     *
      * @param useCaseFactory driver port to the domain
      * @return a scheduler bean
      */
