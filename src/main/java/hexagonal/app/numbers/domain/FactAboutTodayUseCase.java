@@ -8,4 +8,8 @@ public class FactAboutTodayUseCase {
     public FactAboutTodayUseCase(Clock fixed) {
         this.fixed = fixed;
     }
+
+    public NumberFact execute() {
+        return new NumberFact(20230723, "some fact");
+    }
 }

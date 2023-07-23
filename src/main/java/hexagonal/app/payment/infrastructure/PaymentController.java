@@ -11,7 +11,6 @@ public class PaymentController {
 
     @GetMapping
     public Payment getPayment() {
-
-        return new Payment();
+        return null;
     }
 }
