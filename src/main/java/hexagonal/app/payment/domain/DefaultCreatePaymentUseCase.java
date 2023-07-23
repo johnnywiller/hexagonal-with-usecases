@@ -1,14 +1,12 @@
 package hexagonal.app.payment.domain;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
-import org.joda.money.Money;
-import org.slf4j.Logger;
-
 import hexagonal.app.payment.domain.port.driven.CardReservationPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
 import hexagonal.app.payment.domain.port.driver.UseCase;
 import hexagonal.app.shared.EventPublisherPort;
+import org.joda.money.Money;
+import org.slf4j.Logger;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class DefaultCreatePaymentUseCase implements UseCase {
 
@@ -38,6 +36,8 @@ public class DefaultCreatePaymentUseCase implements UseCase {
 
         CardReservationResult reservationResult =
                 cardReservationPort.reserveAmount();
+
+
 
         if (reservationResult.isSuccessful()) {
             eventPublisher.publish(createdPayment);
