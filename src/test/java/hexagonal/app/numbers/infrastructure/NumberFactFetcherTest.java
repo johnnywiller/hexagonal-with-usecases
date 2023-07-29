@@ -8,7 +8,7 @@ public class NumberFactFetcherTest {
     @Test
     void shouldFetchNumber() {
         NumberFactFetcher fetcher = new NumberFactFetcher();
-        String fact = fetcher.fetch(20230723);
+        String fact = fetcher.fetch(789);
         assertThat(fact).isNotBlank();
     }
 }
