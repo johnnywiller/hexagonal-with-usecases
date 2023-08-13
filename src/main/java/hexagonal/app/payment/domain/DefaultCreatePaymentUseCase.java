@@ -1,5 +1,7 @@
+
 package hexagonal.app.payment.domain;
 
+import hexagonal.app.numbers.domain.FactAboutTodayUseCase;
 import hexagonal.app.payment.domain.port.driven.CardReservationPort;
 import hexagonal.app.payment.domain.port.driven.PaymentIdentityPort;
 import hexagonal.app.payment.domain.port.driver.UseCase;
@@ -28,6 +30,9 @@ public class DefaultCreatePaymentUseCase implements UseCase {
 
     @Override
     public void execute() {
+        FactAboutTodayUseCase useCase = new FactAboutTodayUseCase(null);
+        useCase.execute();
+
         log.info("Creating payment for {}", command);
         Money paymentAmount = command.basket().total();
         final PaymentCreatedEvent createdPayment = new PaymentCreatedEvent(
