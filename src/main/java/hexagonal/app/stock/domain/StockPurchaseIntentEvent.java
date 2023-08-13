@@ -1,3 +1,9 @@
 package hexagonal.app.stock.domain;
 
-public record StockPurchaseIntentEvent(String userId, String tickerSymbol, int numberOfShares) {}
+import org.jmolecules.event.types.DomainEvent;
+
+public record StockPurchaseIntentEvent(String userId,
+                                       String tickerSymbol,
+                                       int numberOfShares)
+        implements DomainEvent {
+}

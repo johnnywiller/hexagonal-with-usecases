@@ -25,8 +25,8 @@ public class BuyStockUseCaseImpl implements BuyStockUseCase {
 
     @Override
     public void buyStock(String userId, String tickerSymbol, int numberOfShares) {
-        User user = findUserPort.findById(userId);
-        Stock stock = findStockPort.findByTickerSymbol(tickerSymbol);
+        User user = findUserPort.byId(userId);
+        Stock stock = findStockPort.byTickerSymbol(tickerSymbol);
         double totalCost = stock.currentPrice() * numberOfShares;
 
         if (user.accountBalance() < totalCost) {
@@ -35,9 +35,8 @@ public class BuyStockUseCaseImpl implements BuyStockUseCase {
             throw new RuntimeException("Not enough funds to buy the stock");
         }
 
-        user.setAccountBalance(user.getAccountBalance() - totalCost);
-        saveUserPort.update(user);
-
-
+        User updatedUser = user.withBalance(user.accountBalance() - totalCost);
+        saveUserPort.update(updatedUser);
+        publisher.publish(new StockPurchaseIntentEvent(userId, tickerSymbol, numberOfShares));
     }
 }

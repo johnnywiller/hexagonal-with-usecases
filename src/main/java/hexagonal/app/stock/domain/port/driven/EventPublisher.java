@@ -1,8 +1,10 @@
 package hexagonal.app.stock.domain.port.driven;
 
-import hexagonal.app.stock.domain.InsufficientBalanceEvent;
+import org.jmolecules.event.annotation.DomainEventPublisher;
+import org.jmolecules.event.types.DomainEvent;
 
 public interface EventPublisher {
 
-    void publish(InsufficientBalanceEvent balanceEvent);
+    @DomainEventPublisher
+    void publish(DomainEvent event);
 }
