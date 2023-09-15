@@ -24,11 +24,11 @@ public class CardReservationResult {
         return reservationStatus == REJECTED;
     }
 
-    static CardReservationResult success() {
+    public static CardReservationResult success() {
         return new CardReservationResult(SUCCESS);
     }
 
-    static CardReservationResult rejected() {
+    public static CardReservationResult rejected() {
         return new CardReservationResult(REJECTED);
     }
 }

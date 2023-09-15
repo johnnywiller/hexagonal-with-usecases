@@ -1,4 +1,5 @@
 package hexagonal.app.payment.domain;
 
-public class Payment {
+public record Payment(String id,
+                      String currency) {
 }
