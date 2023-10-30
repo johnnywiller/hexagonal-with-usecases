@@ -15,7 +15,7 @@
     <description>hexagonal-in-practice</description>
     <properties>
         <java.version>19</java.version>
-        <joda-money.version>1.0.3</joda-money.version>
+        <joda-money.version>1.0.4</joda-money.version>
     </properties>
 
     <dependencies>
