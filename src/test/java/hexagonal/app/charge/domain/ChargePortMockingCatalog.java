@@ -2,7 +2,6 @@ package hexagonal.app.charge.domain;
 
 import hexagonal.app.charge.domain.port.driven.GetReservationPort;
 import hexagonal.app.charge.domain.port.driven.MakeChargePort;
-import hexagonal.app.payment.domain.PaymentId;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 
