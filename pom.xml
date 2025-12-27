@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0-RC1</version>
+        <version>4.0.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>willer</groupId>
@@ -14,8 +14,8 @@
     <name>hexagonal-in-practice</name>
     <description>hexagonal-in-practice</description>
     <properties>
-        <java.version>19</java.version>
-        <joda-money.version>1.0.4</joda-money.version>
+        <java.version>25</java.version>
+        <joda-money.version>2.0.3</joda-money.version>
     </properties>
 
     <dependencies>
@@ -55,11 +55,6 @@
             <artifactId>joda-money</artifactId>
             <version>${joda-money.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 
     <build>
@@ -67,14 +62,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
     </build>

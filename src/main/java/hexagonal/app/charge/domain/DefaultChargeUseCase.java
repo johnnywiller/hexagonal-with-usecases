@@ -5,14 +5,20 @@ import hexagonal.app.charge.domain.port.driven.MakeChargePort;
 import hexagonal.app.charge.domain.port.driver.ChargeCommand;
 import hexagonal.app.charge.domain.port.driver.ChargeUseCaseFactory;
 import hexagonal.app.shared.EventPublisherPort;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class DefaultChargeUseCase implements ChargeUseCaseFactory.ChargeUseCase {
 
     private final GetReservationPort getReservationPort;
     private final MakeChargePort makeChargePort;
     private final EventPublisherPort eventPublisherPort;
+
+    public DefaultChargeUseCase(GetReservationPort getReservationPort,
+                                MakeChargePort makeChargePort,
+                                EventPublisherPort eventPublisherPort) {
+        this.getReservationPort = getReservationPort;
+        this.makeChargePort = makeChargePort;
+        this.eventPublisherPort = eventPublisherPort;
+    }
 
     @Override
     public void execute(ChargeCommand command) {
