@@ -1,0 +1,31 @@
+# Maven
+target/
+!target/*.jar
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Frontend (if not needed in container)
+frontend/
+node_modules/
+
+# Other
+.DS_Store
+*.log
+
